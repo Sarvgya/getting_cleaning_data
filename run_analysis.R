@@ -25,7 +25,7 @@ Sub_total <- rbind(Sub_train, Sub_test)
 selected_var <- variable_names[grep("mean\\(\\)|std\\(\\)",variable_names[,2]),]
 X_total <- X_total[,selected_var[,1]]
 
-# Uses descriptive activity names to name the activities in the data set
+# Using descriptive activity names to name the activities in the data set
 colnames(Y_total) <- "activity"
 Y_total$activitylabel <- factor(Y_total$activity, labels = as.character(activity_labels[,2]))
 activitylabel <- Y_total[,-1]
@@ -36,5 +36,9 @@ colnames(X_total) <- variable_names[selected_var[,1],2]
 # Last Step
 colnames(Sub_total) <- "subject"
 total <- cbind(X_total, activitylabel, Sub_total)
+
+#Summarize
 total_mean <- total %>% group_by(activitylabel, subject) %>% summarize_each(funs(mean))
+
+#Last line of code we save an output file in the given path.
 write.table(total_mean, file = "./UCI HAR Dataset/tidydata.txt", row.names = FALSE, col.names = TRUE)
